@@ -4,8 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 import Login from './pages/Public/Login/Login';
 import Register from './pages/Public/Register/Register';
-import Dashboard from './pages/Main/Dashboard/Dashboard';
-import CastAndCrew from './pages/Main/Movie/Form/CastAndCrew';
+import CastAndCrews from './pages/Main/Movie/Form/CastNCrews';
 import Main from './pages/Main/Main';
 import Movie from './pages/Main/Movie/Movie';
 import Lists from './pages/Main/Movie/Lists/Lists';
@@ -44,7 +43,8 @@ const router = createBrowserRouter([
               },
               {
                 path: '/main/movies/form/:movieId/cast-and-crews',
-                element: <CastAndCrew />,
+                element:
+                  <CastAndCrews />,
               },
               {
                 path: '/main/movies/form/:movieId/photos',
