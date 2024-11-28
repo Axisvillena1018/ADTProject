@@ -1,0 +1,23 @@
+.cast-and-crew {
+    padding: 1rem;
+  }
+  
+  .cast-and-crew form {
+    margin-bottom: 1rem;
+  }
+  
+  .cast-and-crew form div {
+    margin-bottom: 0.5rem;
+  }
+  
+  .cast-and-crew ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .cast-and-crew li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  
