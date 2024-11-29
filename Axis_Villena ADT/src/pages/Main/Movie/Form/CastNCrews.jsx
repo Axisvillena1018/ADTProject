@@ -6,16 +6,14 @@ import './CastAndCrews.css';
 const CastAndCrews = () => {
   const { movieId } = useParams();
   const [castList, setCastList] = useState([]);
-  const [newCast, setNewCast] = useState({
-    name: '',
-    url: '',
-    characterName: '',
-  });
+
+  // Set up a base URL for axios
+  axios.defaults.baseURL = 'http://localhost/movieproject-api';
 
   // Fetch cast data from the backend
   useEffect(() => {
     axios
-      .get(`/casts/${movieId}`)
+      .get(`/admin/casts/${movieId}`) // Adjusted the endpoint
       .then((response) => {
         setCastList(response.data);
       })
@@ -24,41 +22,10 @@ const CastAndCrews = () => {
       });
   }, [movieId]);
 
-  // Handle input change for new cast
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewCast((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  // Save a new cast member
-  const handleAddCast = () => {
-    if (!newCast.name || !newCast.url || !newCast.characterName) {
-      alert('Please fill in all fields.');
-      return;
-    }
-
-    const data = { ...newCast, movieId };
-
-    axios
-      .post('/casts', data)
-      .then((response) => {
-        alert('Cast added successfully!');
-        setCastList((prevList) => [...prevList, response.data]);
-        setNewCast({ name: '', url: '', characterName: '' });
-      })
-      .catch((error) => {
-        console.error('Error adding cast:', error);
-        alert('Failed to add cast. Please try again.');
-      });
-  };
-
   // Delete a cast member
   const handleDeleteCast = (id) => {
     axios
-      .delete(`/casts/${id}`)
+      .delete(`/admin/casts/${id}`) // Adjusted the delete endpoint
       .then(() => {
         alert('Cast deleted successfully!');
         setCastList((prevList) => prevList.filter((cast) => cast.id !== id));
@@ -72,42 +39,6 @@ const CastAndCrews = () => {
   return (
     <div className="cast-and-crews">
       <h1>Cast & Crews for Movie ID: {movieId}</h1>
-
-      <div className="add-cast">
-        <h2>Add New Cast</h2>
-        <form>
-          <div>
-            <label>Name:</label>
-            <input
-              type="text"
-              name="name"
-              value={newCast.name}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <label>Image URL:</label>
-            <input
-              type="text"
-              name="url"
-              value={newCast.url}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <label>Character Name:</label>
-            <input
-              type="text"
-              name="characterName"
-              value={newCast.characterName}
-              onChange={handleInputChange}
-            />
-          </div>
-          <button type="button" onClick={handleAddCast}>
-            Add Cast
-          </button>
-        </form>
-      </div>
 
       <div className="cast-list">
         <h2>Cast List</h2>
