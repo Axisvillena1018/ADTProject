@@ -6,14 +6,22 @@ import './CastAndCrews.css';
 const CastAndCrews = () => {
   const { movieId } = useParams();
   const [castList, setCastList] = useState([]);
+  const [newCast, setNewCast] = useState({
+    name: '',
+    characterName: '',
+    url: '',
+  });
 
   // Set up a base URL for axios
   axios.defaults.baseURL = 'http://localhost/movieproject-api';
 
+  // Set the Authorization token for Axios requests
+  axios.defaults.headers.common['Authorization'] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImZpcnN0TmFtZSI6InN0cmluZyIsIm1pZGRsZU5hbWUiOiJzdHJpbmciLCJsYXN0TmFtZSI6InN0cmluZyIsImNvbnRhY3RObyI6InN0cmluZyIsInJvbGUiOiJ1c2VyIn0.D-Q2rYdQe9UWDu1HWAg_i1Hg48J-tyglpXZgiAQYTl0`;
+
   // Fetch cast data from the backend
   useEffect(() => {
     axios
-      .get(`/admin/casts/${movieId}`) // Adjusted the endpoint
+      .get(`/admin/casts/${movieId}`)
       .then((response) => {
         setCastList(response.data);
       })
@@ -25,7 +33,7 @@ const CastAndCrews = () => {
   // Delete a cast member
   const handleDeleteCast = (id) => {
     axios
-      .delete(`/admin/casts/${id}`) // Adjusted the delete endpoint
+      .delete(`/admin/casts/${id}`)
       .then(() => {
         alert('Cast deleted successfully!');
         setCastList((prevList) => prevList.filter((cast) => cast.id !== id));
@@ -33,6 +41,42 @@ const CastAndCrews = () => {
       .catch((error) => {
         console.error('Error deleting cast:', error);
         alert('Failed to delete cast. Please try again.');
+      });
+  };
+
+  // Handle new cast member form input
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewCast((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  // Create a new cast member
+  const handleCreateCast = () => {
+    const castData = {
+      userId: 1,
+      movieId: parseInt(movieId),
+      name: newCast.name,
+      characterName: newCast.characterName,
+      url: newCast.url,
+    };
+
+    axios
+      .post('/admin/casts', castData)
+      .then((response) => {
+        alert('Cast added successfully!');
+        setCastList((prevList) => [...prevList, response.data]);
+        setNewCast({
+          name: '',
+          characterName: '',
+          url: '',
+        });
+      })
+      .catch((error) => {
+        console.error('Error creating cast:', error);
+        alert('Failed to add cast. Please try again.');
       });
   };
 
@@ -52,6 +96,48 @@ const CastAndCrews = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="add-cast-form">
+        <h2>Add a New Cast Member</h2>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleCreateCast();
+          }}
+        >
+          <div>
+            <label>Name:</label>
+            <input
+              type="text"
+              name="name"
+              value={newCast.name}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Character Name:</label>
+            <input
+              type="text"
+              name="characterName"
+              value={newCast.characterName}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Image URL:</label>
+            <input
+              type="url"
+              name="url"
+              value={newCast.url}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <button type="submit">Add Cast</button>
+        </form>
       </div>
     </div>
   );

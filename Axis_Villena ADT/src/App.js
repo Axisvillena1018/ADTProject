@@ -5,6 +5,8 @@ import './index.css';
 import Login from './pages/Public/Login/Login';
 import Register from './pages/Public/Register/Register';
 import CastAndCrews from './pages/Main/Movie/Form/CastNCrews';
+import PictureUpload from './pages/Main/Movie/Form/PictureUpload';
+import VideoForm from './pages/Main/Movie/Form/VideoForm';
 import Main from './pages/Main/Main';
 import Movie from './pages/Main/Movie/Movie';
 import Lists from './pages/Main/Movie/Lists/Lists';
@@ -48,15 +50,13 @@ const router = createBrowserRouter([
               },
               {
                 path: '/main/movies/form/:movieId/photos',
-                element: (
-                  <h1>Change this for photos CRUD functionality component.</h1>
-                ),
+                element: 
+                <PictureUpload />,
               },
               {
                 path: '/main/movies/form/:movieId/videos',
-                element: (
-                  <h1>Change this for videos CRUD functionality component.</h1>
-                ),
+                element: 
+                <VideoForm />,
               },
             ],
           },
