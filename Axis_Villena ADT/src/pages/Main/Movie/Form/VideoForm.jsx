@@ -3,7 +3,7 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost/movieproject-api';
 
-const VideoForm = ({ userId, movieId }) => {
+const VideoForm = ({ userId, movieId, tmdbApiKey }) => {
   const [formData, setFormData] = useState({
     url: '',
     name: '',
@@ -13,6 +13,7 @@ const VideoForm = ({ userId, movieId }) => {
     official: 0,
   });
   const [statusMessage, setStatusMessage] = useState('');
+  const [videoList, setVideoList] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,9 +39,44 @@ const VideoForm = ({ userId, movieId }) => {
     }
   };
 
+  const fetchVideos = async () => {
+    const url = `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US&api_key=${tmdbApiKey}`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { accept: 'application/json' },
+      });
+      const data = await response.json();
+      if (data.results) {
+        setVideoList(data.results);
+        setStatusMessage('Videos fetched successfully!');
+      } else {
+        setStatusMessage('No videos found for this movie.');
+      }
+    } catch (error) {
+      console.error(error);
+      setStatusMessage('Failed to fetch videos. Please try again.');
+    }
+  };
+
   return (
     <div>
       <h2>Add a Video</h2>
+      <button onClick={fetchVideos}>Fetch Videos from TMDB</button>
+      {videoList.length > 0 && (
+        <div>
+          <h3>Fetched Videos:</h3>
+          <ul>
+            {videoList.map((video) => (
+              <li key={video.id}>
+                <strong>{video.name}</strong> ({video.type}) - {video.site}
+                <br />
+                Video Key: {video.key}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           <label>URL:</label>
