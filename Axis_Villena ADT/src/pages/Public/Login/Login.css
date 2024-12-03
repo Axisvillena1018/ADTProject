@@ -4,46 +4,92 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: aquamarine;
+  background-color: aqua;
 }
 
 .form-container {
   padding: 4rem 2rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
+  border: 3px solid #0400f5;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-.form-container > div {
-  margin-bottom: 12px;
+  background-color: rgba(64, 224, 208, 0.9);
 }
 
 .form-group {
   display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .form-group label {
-  width: 70px;
-  margin-right: 8px;
+  font-weight: bold; 
   text-align: left;
 }
+
+.form-group input {
+  width: 300px;
+  height: 30px;
+  padding: 10px; 
+  border: 2px solid #ccc; 
+  border-radius: 4px; 
+}
+
 .login.errors {
   margin-bottom: 1rem;
 }
+
 .errors {
   color: red;
   font-size: 12px;
 }
+
 .submit-container {
   margin-top: 12px;
   text-align: center;
 }
+
+.submit-container button {
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #0400f5;
+  color: white;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.submit-container button:hover {
+  background-color: aqua;
+  box-shadow: 0 0 10px 2px rgba(0, 255, 255, 0.7);
+}
+
 .register-container {
   text-align: center;
 }
+
 .show-password {
   margin-bottom: 1rem;
   cursor: pointer;
+}
+
+.form-container h3 {
+  font-size: 200%; 
+  margin-bottom: 30px;
+}
+
+.form-group input {
+  width: 300px;
+  height: 30px;
+  padding: 4px; 
+  font-size: 15px;
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  transition: box-shadow 0.3s ease;
+}
+
+.form-group input:hover {
+  box-shadow: 0 0 10px 2px rgba(0, 0, 255, 0.7); 
 }
