@@ -15,32 +15,32 @@ const CastAndCrews = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch cast data from TMDB API
-  const searchCastsAndCrews = () => {
-    axios
-      .get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
-        headers: {
-          Authorization: `Bearer YOUR_API_KEY`,
-          Accept: 'application/json',
-        },
-      })
-      .then((response) => {
-        const results = response.data.cast || [];
-        setCastList(
-          results.map((cast) => ({
-            id: cast.id,
-            name: cast.name,
-            characterName: cast.character,
-            url: cast.profile_path
-              ? `https://image.tmdb.org/t/p/w500${cast.profile_path}`
-              : 'https://via.placeholder.com/96', // Placeholder if no image
-          }))
-        );
-      })
-      .catch((error) => {
-        console.error('Error fetching casts and crews:', error);
-        alert('Failed to fetch cast and crew. Please try again.');
-      });
-  };
+const searchCastsAndCrews = () => {
+  axios
+    .get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MGY0ZjFlMmNhODQ1ZjA3NWY5MmI5ZDRlMGY3ZTEwYiIsIm5iZiI6MTcyOTkyNjY3NC40NzIwOTksInN1YiI6IjY3MTM3ODRmNjUwMjQ4YjlkYjYxZTgxMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RRJNLOg8pmgYoomiCWKtwkw74T3ZtAs7ZScqxo1bzWg`,
+        Accept: 'application/json',
+      },
+    })
+    .then((response) => {
+      const results = response.data.cast || [];
+      setCastList(
+        results.map((cast) => ({
+          id: cast.id,
+          name: cast.name,
+          characterName: cast.character,
+          url: cast.profile_path
+            ? `https://image.tmdb.org/t/p/w500${cast.profile_path}`
+            : 'https://via.placeholder.com/96', // Placeholder if no image
+        }))
+      );
+    })
+    .catch((error) => {
+      console.error('Error fetching casts and crews:', error);
+      alert('Failed to fetch cast and crew. Please try again.');
+    });
+};
 
   // Handle selection of a cast member
   const handleSelectCast = (cast) => {

@@ -1,0 +1,33 @@
+.video-form {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .video-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .video-item {
+    width: 100%;
+    max-width: 560px;
+    text-align: center;
+  }
+  
+  .video-item iframe {
+    width: 100%;
+    height: auto;
+    max-height: 315px;
+  }
+  
+  .video-item p {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
