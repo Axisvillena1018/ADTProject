@@ -4,8 +4,11 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: aqua;
+  background-image: url('movie-background-collage_23-2149876027.jpg'); /* Use the new image */
+  background-size: cover; /* Ensure the image covers the whole area */
+  background-position: center; /* Center the background image */
 }
+
 
 .form-container {
   padding: 4rem 2rem;
