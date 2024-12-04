@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import './CastAndCrews.css';
 
 const CastAndCrews = () => {
   const { movieId } = useParams();
@@ -15,8 +14,9 @@ const CastAndCrews = () => {
   // Set up a base URL for axios
   axios.defaults.baseURL = 'http://localhost/movieproject-api';
 
-  // Set the Authorization token for Axios requests
+  // Set the Authorization token and Accept header for Axios requests
   axios.defaults.headers.common['Authorization'] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImZpcnN0TmFtZSI6InN0cmluZyIsIm1pZGRsZU5hbWUiOiJzdHJpbmciLCJsYXN0TmFtZSI6InN0cmluZyIsImNvbnRhY3RObyI6InN0cmluZyIsInJvbGUiOiJ1c2VyIn0.D-Q2rYdQe9UWDu1HWAg_i1Hg48J-tyglpXZgiAQYTl0`;
+  axios.defaults.headers.common['Accept'] = '*/*'; // Only accept */*
 
   // Fetch cast data from the backend
   useEffect(() => {

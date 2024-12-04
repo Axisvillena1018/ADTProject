@@ -33,6 +33,7 @@ const Form = () => {
   const handleSave = () => {
     const accessToken = localStorage.getItem('accessToken');
     console.log(accessToken);
+
     if (selectedMovie === undefined) {
       alert('Please search and select a movie.');
     } else {
@@ -48,17 +49,20 @@ const Form = () => {
         isFeatured: 0,
       };
 
+      const url = movieId ? `/movies/${movieId}` : '/movies';
+      const method = movieId ? 'patch' : 'post';
+
       axios({
-        method: 'post',
-        url: '/movies',
+        method: method,
+        url: url,
         data: data,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-        .then((saveResponse) => {
-          console.log(saveResponse);
-          alert('Success');
+        .then((response) => {
+          console.log(response);
+          alert('Movie saved successfully!');
         })
         .catch((error) => {
           console.log(error);

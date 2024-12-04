@@ -21,20 +21,31 @@
 .form-group {
   display: flex;
   align-items: center;
+  justify-content: space-between; 
+  width: 100%;
   gap: 20px;
 }
 
 .form-group label {
-  font-weight: bold; 
+  font-weight: bold;
   text-align: left;
+  width: 120px;
 }
 
 .form-group input {
-  width: 300px;
+  width: 200px;
   height: 30px;
-  padding: 10px; 
-  border: 2px solid #ccc; 
+  padding: 4px; 
+  font-size: 15px;
+  border: 1px solid #ccc; 
   border-radius: 4px; 
+  transition: box-shadow 0.3s ease;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.form-group input:hover {
+  box-shadow: 0 0 10px 2px rgba(0, 0, 255, 0.7);
 }
 
 .login.errors {
@@ -81,7 +92,7 @@
 }
 
 .form-group input {
-  width: 300px;
+  width: 200px; /* Consistent width for the input */
   height: 30px;
   padding: 4px; 
   font-size: 15px;
