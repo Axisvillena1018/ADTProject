@@ -1,117 +1,137 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import './CastNCrews.css';  // Import the CSS file
 
 const CastAndCrews = () => {
   const { movieId } = useParams();
   const [castList, setCastList] = useState([]);
-  const [newCast, setNewCast] = useState({
+  const [selectedCast, setSelectedCast] = useState({
+    id: '',
     name: '',
     characterName: '',
     url: '',
   });
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Set up a base URL for axios
-  axios.defaults.baseURL = 'http://localhost/movieproject-api';
-
-  // Set the Authorization token and Accept header for Axios requests
-  axios.defaults.headers.common['Authorization'] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImZpcnN0TmFtZSI6InN0cmluZyIsIm1pZGRsZU5hbWUiOiJzdHJpbmciLCJsYXN0TmFtZSI6InN0cmluZyIsImNvbnRhY3RObyI6InN0cmluZyIsInJvbGUiOiJ1c2VyIn0.D-Q2rYdQe9UWDu1HWAg_i1Hg48J-tyglpXZgiAQYTl0`;
-  axios.defaults.headers.common['Accept'] = '*/*'; // Only accept */*
-
-  // Fetch cast data from the backend
-  useEffect(() => {
+  // Fetch cast data from TMDB API
+  const searchCastsAndCrews = () => {
     axios
-      .get(`/admin/casts/${movieId}`)
+      .get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
+        headers: {
+          Authorization: `Bearer YOUR_API_KEY`,
+          Accept: 'application/json',
+        },
+      })
       .then((response) => {
-        setCastList(response.data);
+        const results = response.data.cast || [];
+        setCastList(
+          results.map((cast) => ({
+            id: cast.id,
+            name: cast.name,
+            characterName: cast.character,
+            url: cast.profile_path
+              ? `https://image.tmdb.org/t/p/w500${cast.profile_path}`
+              : 'https://via.placeholder.com/96', // Placeholder if no image
+          }))
+        );
       })
       .catch((error) => {
-        console.error('Error fetching casts:', error);
-      });
-  }, [movieId]);
-
-  // Delete a cast member
-  const handleDeleteCast = (id) => {
-    axios
-      .delete(`/admin/casts/${id}`)
-      .then(() => {
-        alert('Cast deleted successfully!');
-        setCastList((prevList) => prevList.filter((cast) => cast.id !== id));
-      })
-      .catch((error) => {
-        console.error('Error deleting cast:', error);
-        alert('Failed to delete cast. Please try again.');
+        console.error('Error fetching casts and crews:', error);
+        alert('Failed to fetch cast and crew. Please try again.');
       });
   };
 
-  // Handle new cast member form input
+  // Handle selection of a cast member
+  const handleSelectCast = (cast) => {
+    setSelectedCast(cast);
+  };
+
+  // Handle input change for the selected cast
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewCast((prevState) => ({
+    setSelectedCast((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  // Create a new cast member
-  const handleCreateCast = () => {
+  // Handle the form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Process the selected cast (for example, send it to the backend)
     const castData = {
-      userId: 1,
-      movieId: parseInt(movieId),
-      name: newCast.name,
-      characterName: newCast.characterName,
-      url: newCast.url,
+      name: selectedCast.name,
+      characterName: selectedCast.characterName,
+      url: selectedCast.url,
     };
 
+    // Example of sending data to backend (this can be adjusted as needed)
     axios
-      .post('/admin/casts', castData)
+      .post('/your-api-endpoint', castData)
       .then((response) => {
         alert('Cast added successfully!');
-        setCastList((prevList) => [...prevList, response.data]);
-        setNewCast({
-          name: '',
-          characterName: '',
-          url: '',
-        });
       })
       .catch((error) => {
-        console.error('Error creating cast:', error);
+        console.error('Error submitting cast:', error);
         alert('Failed to add cast. Please try again.');
       });
   };
+
+  // Filter cast members based on the search query
+  const filteredCastList = castList.filter((cast) =>
+    cast.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="cast-and-crews">
       <h1>Cast & Crews for Movie ID: {movieId}</h1>
 
-      <div className="cast-list">
-        <h2>Cast List</h2>
-        {castList.map((cast) => (
-          <div key={cast.id} className="cast-item">
-            <img src={cast.url} alt={cast.name} style={{ width: 250, height: 250 }} />
-            <div>
-              <h3>{cast.name}</h3>
-              <p>Character: {cast.characterName}</p>
-              <button onClick={() => handleDeleteCast(cast.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
+      <div className="search-cast">
+        <h2>Search Cast & Crew</h2>
+        <input
+          type="text"
+          placeholder="Search Cast by Name"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button onClick={searchCastsAndCrews}>
+          Search on TMDB
+        </button>
       </div>
 
-      <div className="add-cast-form">
-        <h2>Add a New Cast Member</h2>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleCreateCast();
-          }}
-        >
+      <div className="cast-list">
+        <h2>Cast List</h2>
+        <div className="cast-item-container">
+          {filteredCastList.map((cast) => (
+            <div
+              key={cast.id}
+              className="cast-item"
+              onClick={() => handleSelectCast(cast)}
+            >
+              <img src={cast.url} alt={cast.name} />
+              <div>
+                <h3>{cast.name}</h3>
+                <p>Character: {cast.characterName}</p>
+                <button onClick={() => handleSelectCast(cast)}>
+                  Add Cast
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="selected-cast-form">
+        <h2>Selected Cast</h2>
+        <form onSubmit={handleSubmit}>
           <div>
             <label>Name:</label>
             <input
               type="text"
               name="name"
-              value={newCast.name}
+              value={selectedCast.name}
               onChange={handleInputChange}
               required
             />
@@ -121,7 +141,7 @@ const CastAndCrews = () => {
             <input
               type="text"
               name="characterName"
-              value={newCast.characterName}
+              value={selectedCast.characterName}
               onChange={handleInputChange}
               required
             />
@@ -131,12 +151,12 @@ const CastAndCrews = () => {
             <input
               type="url"
               name="url"
-              value={newCast.url}
+              value={selectedCast.url}
               onChange={handleInputChange}
               required
             />
           </div>
-          <button type="submit">Add Cast</button>
+          <button type="submit">Submit Cast</button>
         </form>
       </div>
     </div>
