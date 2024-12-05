@@ -57,27 +57,32 @@ const searchCastsAndCrews = () => {
   };
 
   // Handle the form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // Updated handleSubmit function
+const handleSubmit = (e) => {
+  e.preventDefault();
 
-    // Process the selected cast (for example, send it to the backend)
-    const castData = {
-      name: selectedCast.name,
-      characterName: selectedCast.characterName,
-      url: selectedCast.url,
-    };
-
-    // Example of sending data to backend (this can be adjusted as needed)
-    axios
-      .post('/your-api-endpoint', castData)
-      .then((response) => {
-        alert('Cast added successfully!');
-      })
-      .catch((error) => {
-        console.error('Error submitting cast:', error);
-        alert('Failed to add cast. Please try again.');
-      });
+  // Construct the payload
+  const castData = {
+    userId: 'your-user-id', // Replace with dynamic user ID if available
+    movieId: movieId, // From useParams
+    name: selectedCast.name,
+    characterName: selectedCast.characterName,
+    url: selectedCast.url,
   };
+
+  // Send POST request to save the cast data
+  axios
+    .post('/admin/casts/', castData)
+    .then((response) => {
+      alert('Cast added successfully!');
+      console.log('Response:', response.data);
+    })
+    .catch((error) => {
+      console.error('Error submitting cast:', error);
+      alert('Failed to add cast. Please try again.');
+    });
+};
+
 
   // Filter cast members based on the search query
   const filteredCastList = castList.filter((cast) =>

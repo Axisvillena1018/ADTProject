@@ -21,9 +21,8 @@
   }
   
   .video-item iframe {
-    width: 100%;
-    height: auto;
-    max-height: 315px;
+    width: 720px;
+    height: 560px;
   }
   
   .video-item p {
