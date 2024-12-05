@@ -57,18 +57,18 @@ const CastAndCrews = () => {
   };
 
   // Handle the form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Validate inputs
     if (!selectedCast.name || !selectedCast.characterName || !selectedCast.url) {
       alert('Please fill in all fields before submitting.');
       return;
     }
-
+  
     // Replace with actual logic to fetch userId dynamically if needed
     const userId = 'dynamic-user-id';
-
+  
     // Construct the payload
     const castData = {
       userId: userId,
@@ -77,19 +77,34 @@ const CastAndCrews = () => {
       characterName: selectedCast.characterName,
       url: selectedCast.url,
     };
-
-    // Send POST request to save the cast data
-    axios
-      .post('/Admin/Casts', castData)
-      .then((response) => {
-        alert('Cast added successfully!');
-        console.log('Response:', response.data);
-      })
-      .catch((error) => {
-        console.error('Error submitting cast:', error.response?.data || error.message);
-        alert(`Failed to add cast. Error: ${error.response?.data?.message || 'Unknown error'}`);
+  
+    try {
+      // Retrieve the access token from localStorage (or another source)
+      const token = localStorage.getItem('accessToken'); // Replace with your storage method
+  
+      if (!token) {
+        alert('Access token not found. Please log in again.');
+        return;
+      }
+  
+      // Send POST request to save the cast data
+      const response = await axios({
+        method: 'POST',
+        url: '/admin/casts',
+        data: castData,
+        headers: {
+          Authorization: `Bearer ${token}`, // Using the token from localStorage
+        },
       });
+  
+      alert('Cast added successfully!');
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error submitting cast:', error.response?.data || error.message);
+      alert(`Failed to add cast. Error: ${error.response?.data?.message || 'Unknown error'}`);
+    }
   };
+  
 
   // Filter cast members based on the search query
   const filteredCastList = castList.filter((cast) =>
