@@ -11,6 +11,7 @@ const PictureUpload = () => {
   const [images, setImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [error, setError] = useState("");
+  const [description, setDescription] = useState("");
 
   const fetchImage = async () => {
     if (!movieId) {
@@ -49,13 +50,54 @@ const PictureUpload = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
 
-  const handleSubmit = () => {
-    if (images.length > 0) {
-      alert("Image submitted successfully!");
+  const handleSubmit = async () => {
+    if (images.length > 0 && description.trim()) {
+      try {
+        // Fetch user information dynamically
+        const response = await axios.get("https://your-api-url.com/getUserInfo", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+          },
+        });
+  
+        const userId = response.data.userId; // Assuming the response contains the userId
+        const token = localStorage.getItem("auth_token"); // Get the Authorization token from localStorage
+  
+        if (!userId || !token) {
+          alert("Please log in to submit an image.");
+          return;
+        }
+  
+        const photoData = {
+          userid: userId,
+          movieid: movieId,
+          url: `${IMAGE_BASE_URL}${images[currentIndex].file_path}`,
+          description,
+        };
+  
+        // Submit the photo data to the server
+        const submitResponse = await axios({
+          method: 'POST',
+          url: 'https://your-api-url.com/Admin/Photos', // Replace with your actual API URL
+          data: photoData,
+          headers: {
+            Authorization: `Bearer ${token}`, // Use the token from localStorage
+          },
+        });
+  
+        if (submitResponse.status === 200) {
+          alert("Image submitted successfully!");
+        }
+      } catch (err) {
+        console.error("Error during submission:", err);
+        setError("An error occurred while submitting the image. Please try again.");
+      }
     } else {
-      alert("Please fetch an image first.");
+      alert("Please fetch an image and add a description before submitting.");
     }
   };
+  
+  
 
   return (
     <div className="picture-upload">
@@ -83,6 +125,13 @@ const PictureUpload = () => {
           </div>
         </div>
       )}
+      <div className="description-section">
+        <textarea
+          placeholder="Add a description..."
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
       <button onClick={handleSubmit} className="submit-button">
         Submit
       </button>

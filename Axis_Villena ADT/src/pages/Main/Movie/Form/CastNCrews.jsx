@@ -14,8 +14,8 @@ const CastAndCrews = () => {
   });
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Fetch cast data from TMDB API
-  const searchCastsAndCrews = () => {
+  // Fetch only cast data from TMDB API
+  const searchCasts = () => {
     axios
       .get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
         headers: {
@@ -37,8 +37,8 @@ const CastAndCrews = () => {
         );
       })
       .catch((error) => {
-        console.error('Error fetching casts and crews:', error);
-        alert('Failed to fetch cast and crew. Please try again.');
+        console.error('Error fetching casts:', error);
+        alert('Failed to fetch cast. Please try again.');
       });
   };
 
@@ -104,7 +104,6 @@ const CastAndCrews = () => {
       alert(`Failed to add cast. Error: ${error.response?.data?.message || 'Unknown error'}`);
     }
   };
-  
 
   // Filter cast members based on the search query
   const filteredCastList = castList.filter((cast) =>
@@ -113,17 +112,17 @@ const CastAndCrews = () => {
 
   return (
     <div className="cast-and-crews">
-      <h1>Cast & Crews for Movie ID: {movieId}</h1>
+      <h1>Cast for Movie ID: {movieId}</h1>
 
       <div className="search-cast">
-        <h2>Search Cast & Crew</h2>
+        <h2>Search Cast</h2>
         <input
           type="text"
           placeholder="Search Cast by Name"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <button onClick={searchCastsAndCrews}>Search on TMDB</button>
+        <button onClick={searchCasts}>Search on TMDB</button>
       </div>
 
       <div className="cast-list">

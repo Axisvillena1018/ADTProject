@@ -88,3 +88,96 @@
     margin-top: 10px;
   }
   
+  /* CastAndCrews.css */
+
+.cast-and-crews {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+.search-cast {
+  margin-bottom: 30px;
+}
+
+.search-cast input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.search-cast button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cast-list,
+.crew-list {
+  margin-bottom: 20px;
+}
+
+.cast-list .cast-item,
+.crew-list .crew-item {
+  display: flex;
+  align-items: center;
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+}
+
+.cast-list .cast-item img,
+.crew-list .crew-item img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.cast-list .cast-item button,
+.crew-list .crew-item button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.selected-cast-form {
+  margin-top: 20px;
+}
+
+.selected-cast-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.selected-cast-form label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.selected-cast-form input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.selected-cast-form button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
