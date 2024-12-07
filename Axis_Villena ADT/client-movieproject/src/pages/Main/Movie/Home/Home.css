@@ -1,8 +1,9 @@
-.featured-movie-container {
-}
 .page-title {
   font-size: 4.5rem;
+  color: blue;
+  text-align: center; /* This will center the text horizontally */
 }
+
 .list-container {
   display: flex;
   flex-wrap: wrap;
@@ -15,13 +16,17 @@
   margin-bottom: 5rem;
   aspect-ratio: 16 / 9;
 }
+
 .featured-backdrop {
-  height: 100%;
-  width: 100%;
+  height: 80%;
+  width: 80%;
   background-size: cover !important;
   display: flex;
   align-items: end;
+  justify-content: center; /* Centers the backdrop horizontally */
+  margin: 0 auto; /* Centers the backdrop within its parent element */
 }
+
 .featured-movie-title {
   font-weight: bold;
   font-size: 3rem;

@@ -19,7 +19,7 @@ const CastAndCrews = () => {
     axios
       .get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImZpcnN0TmFtZSI6InN0cmluZyIsIm1pZGRsZU5hbWUiOiJzdHJpbmciLCJsYXN0TmFtZSI6InN0cmluZyIsImNvbnRhY3RObyI6InN0cmluZyIsInJvbGUiOiJ1c2VyIn0.D-Q2rYdQe9UWDu1HWAg_i1Hg48J-tyglpXZgiAQYTl0`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzcyMWQwZGMyNjA5NTgzMGUwNTMzMWJlOTUyMmZlZSIsIm5iZiI6MTczMzMxMjA3Mi42NDUsInN1YiI6IjY3NTAzZTQ4NDNhNmFiZDA2YjZlYjYzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.g9SuizCUJ7Ikbf6tKraKj0EI8S10qVtRv0aCqBqueqE`,
           Accept: 'application/json',
         },
       })
@@ -109,6 +109,32 @@ const CastAndCrews = () => {
   const filteredCastList = castList.filter((cast) =>
     cast.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Fetch all created casts
+const fetchCasts = async () => {
+  try {
+    const token = localStorage.getItem('accessToken'); // Replace with your storage method
+
+    if (!token) {
+      alert('Access token not found. Please log in again.');
+      return;
+    }
+
+    const response = await axios.get('/admin/casts', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log('Fetched casts:', response.data);
+    // Handle the fetched casts as needed
+    // For example, you can display them or store them in a state
+  } catch (error) {
+    console.error('Error fetching created casts:', error.response?.data || error.message);
+    alert(`Failed to fetch casts. Error: ${error.response?.data?.message || 'Unknown error'}`);
+  }
+};
+
 
   return (
     <div className="cast-and-crews">

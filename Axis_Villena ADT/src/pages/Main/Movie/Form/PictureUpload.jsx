@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./PictureUpload.css";
 
-const TMDB_API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MGY0ZjFlMmNhODQ1ZjA3NWY5MmI5ZDRlMGY3ZTEwYiIsIm5iZiI6MTcyOTkyNjY3NC40NzIwOTksInN1YiI6IjY3MTM3ODRmNjUwMjQ4YjlkYjYxZTgxMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RRJNLOg8pmgYoomiCWKtwkw74T3ZtAs7ZScqxo1bzWg";
+const TMDB_API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzcyMWQwZGMyNjA5NTgzMGUwNTMzMWJlOTUyMmZlZSIsIm5iZiI6MTczMzMxMjA3Mi42NDUsInN1YiI6IjY3NTAzZTQ4NDNhNmFiZDA2YjZlYjYzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.g9SuizCUJ7Ikbf6tKraKj0EI8S10qVtRv0aCqBqueqE";
 const TMDB_BASE_URL = "https://api.themoviedb.org/3/movie/";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original"; // URL for TMDB images
 
@@ -68,20 +68,21 @@ const PictureUpload = () => {
           return;
         }
   
-        const photoData = {
+        // Data to be submitted to the /admin/casts endpoint
+        const castData = {
           userid: userId,
           movieid: movieId,
-          url: `${IMAGE_BASE_URL}${images[currentIndex].file_path}`,
+          imageUrl: `${IMAGE_BASE_URL}${images[currentIndex].file_path}`,
           description,
         };
   
-        // Submit the photo data to the server
+        // Submit the data to the server
         const submitResponse = await axios({
           method: 'POST',
-          url: 'https://your-api-url.com/Admin/Photos', // Replace with your actual API URL
-          data: photoData,
+          url: 'https://movieproject-api/admin/casts', // Updated endpoint
+          data: castData,
           headers: {
-            Authorization: `Bearer ${token}`, // Use the token from localStorage
+            Authorization: `Bearer ${token}`, // Using the token from localStorage
           },
         });
   
@@ -97,8 +98,6 @@ const PictureUpload = () => {
     }
   };
   
-  
-
   return (
     <div className="picture-upload">
       <h1>Picture Upload</h1>

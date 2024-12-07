@@ -22,7 +22,7 @@ const VideoForm = () => {
         {
           headers: {
             Accept: 'application/json',
-            Authorization: 'Bearer <your_api_token>',
+            Authorization: 'Bearer <eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzcyMWQwZGMyNjA5NTgzMGUwNTMzMWJlOTUyMmZlZSIsIm5iZiI6MTczMzMxMjA3Mi42NDUsInN1YiI6IjY3NTAzZTQ4NDNhNmFiZDA2YjZlYjYzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.g9SuizCUJ7Ikbf6tKraKj0EI8S10qVtRv0aCqBqueqE',
           },
         }
       );
@@ -46,18 +46,26 @@ const VideoForm = () => {
     if (!movieId) return; // Don't fetch videos if there's no movieId
 
     const fetchVideos = async () => {
+      if (!movieId) return;
+    
       setLoading(true);
       setError('');
       try {
-        const response = await axios({
-          method: 'get',
-          url: `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
-          headers: {
-            Accept: 'application/json',
-            Authorization: 'Bearer <your_api_token>',
-          },
-        });
-        setVideos(response.data.results);
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/movie/${movieId}/videos?`,
+          {
+            headers: {
+              Accept: 'application/json',
+              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzcyMWQwZGMyNjA5NTgzMGUwNTMzMWJlOTUyMmZlZSIsIm5iZiI6MTczMzMxMjA3Mi42NDUsInN1YiI6IjY3NTAzZTQ4NDNhNmFiZDA2YjZlYjYzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.g9SuizCUJ7Ikbf6tKraKj0EI8S10qVtRv0aCqBqueqE',
+            },
+          }
+        );
+    
+        if (response.data.results.length > 0) {
+          setVideos(response.data.results);
+        } else {
+          setError('No videos found for this movie.');
+        }
       } catch (error) {
         console.error('Error fetching videos:', error);
         setError('Failed to fetch videos.');

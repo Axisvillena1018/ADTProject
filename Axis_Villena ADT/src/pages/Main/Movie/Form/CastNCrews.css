@@ -29,17 +29,26 @@
   .cast-list {
     margin-bottom: 20px;
   }
-  
-  .cast-list .cast-item {
+
+  .cast-item-container {
     display: flex;
-    align-items: center;
-    border: 2px solid black;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    background-color: #f9f9f9;
-  }
+    flex-direction: column; /* Align items vertically instead of wrapping */
+    gap: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.cast-list .cast-item {
+  display: flex;
+  align-items: center;
+  border: 2px solid black; /* Border around each item */
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+}
   
   .cast-list .cast-item img {
     width: 96px;
