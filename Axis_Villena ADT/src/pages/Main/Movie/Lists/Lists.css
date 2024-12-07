@@ -1,17 +1,71 @@
+/* CSS for Lists component with a light blue border */
+
 .lists-container {
   width: 100%;
   display: flex;
   flex-direction: column;
+  color: white; /* Set font color to white */
+  border: 2px solid rgba(173, 216, 230, 0.25); /* Light blue border with 25% opacity */
+  border-radius: 5px;
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: rgba(0, 255, 255, 0.25); /* Cyan background with 25% opacity */
 }
+
 .create-container {
   align-self: flex-end;
   margin: 1rem 0;
+  color: white; /* Set font color to white */
 }
+
+.create-container button {
+  width: 150px;
+  height: 50px;
+  background-color: blue;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
 .table-container,
 .movie-lists {
   width: 100%;
+  color: white; /* Set font color to white */
 }
 
 .table-container {
   text-align: center;
 }
+
+button {
+  width: 90px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: white; /* Set font color to white */
+}
+
+button[type='button'] {
+  margin: 0 10px;
+  margin-top: 5px;
+}
+
+button:nth-child(1) { /* Edit button */
+  background-color: green;
+}
+
+button:nth-child(2) { /* Delete button */
+  background-color: red;
+}
+
+.movie-id {
+  font-weight: bold; /* Makes the text bold */
+  -webkit-text-stroke: 3px black; /* Adds a 3px outline around the text */
+  color: white; /* Fills the text color (optional if needed for contrast) */
+}
+

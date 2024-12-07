@@ -1,8 +1,13 @@
-.Main {
+  .Main {
   display: flex;
   overflow: hidden;
   max-height: 100vh;
+  background-image: url('0c1b541757e16d7c32736c0ec00d416f.jpg');
+  background-size: cover; /* Ensures the image covers the entire area */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
 }
+
 .Main .container {
   display: flex;
   width: 100vw;
