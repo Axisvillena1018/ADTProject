@@ -1,14 +1,29 @@
 .card {
   max-width: 180px;
-  border: 20px solid #898989;
-  background-color: #898989;
+  border: 20px solid blue;
+  background-color: blue;
+  text-align: center; /* Center-aligns the text inside the card */
+  border-radius: 10px; /* Adds curved corners */
 }
+
 .card img {
   max-width: 180px;
   object-fit: contain;
+  border-radius: 10px; /* Adds curved corners to the image */
+}
+
+.card span {
+  display: block; /* Ensures the span takes the full width */
+  font-weight: bold; /* Makes the title bold */
 }
 
 .card:hover {
-  border: 20px solid #3f3f3f;
-  background-color: #3f3f3f;
+  border: 20px solid lightblue;
+  background-color: lightblue;
+  border-radius: 10px; /* Adds curved corners to the hover state */
+}
+
+.card img:hover {
+  box-shadow: 0 0 20px blue; /* Adds a blue glow effect */
+  border-radius: 10px; /* Ensures the image retains the rounded corners */
 }

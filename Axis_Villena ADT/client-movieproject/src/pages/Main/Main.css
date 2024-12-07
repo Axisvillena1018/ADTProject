@@ -2,7 +2,10 @@
   display: flex;
   overflow: hidden;
   max-height: 100vh;
+  background: url('movie-background-collage_23-2149876027.jpg') no-repeat center center;
+  background-size: cover; /* Ensures the image covers the entire area */
 }
+
 .Main .container {
   display: flex;
   flex-direction: column;
