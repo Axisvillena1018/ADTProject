@@ -6,6 +6,7 @@ const VideoForm = () => {
   const [query, setQuery] = useState(''); // Search query state
   const [movieId, setMovieId] = useState(null); // Selected movie ID
   const [videos, setVideos] = useState([]); // Video data
+  const [savedVideos, setSavedVideos] = useState([]); // Saved videos
   const [loading, setLoading] = useState(false); // Loading state
   const [error, setError] = useState(''); // Error message state
 
@@ -21,8 +22,7 @@ const VideoForm = () => {
         {
           headers: {
             Accept: 'application/json',
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MGY0ZjFlMmNhODQ1ZjA3NWY5MmI5ZDRlMGY3ZTEwYiIsIm5iZiI6MTcyOTkyNjY3NC40NzIwOTksInN1YiI6IjY3MTM3ODRmNjUwMjQ4YjlkYjYxZTgxMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RRJNLOg8pmgYoomiCWKtwkw74T3ZtAs7ZScqxo1bzWg',
+            Authorization: 'Bearer <your_api_token>',
           },
         }
       );
@@ -54,8 +54,7 @@ const VideoForm = () => {
           url: `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
           headers: {
             Accept: 'application/json',
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MGY0ZjFlMmNhODQ1ZjA3NWY5MmI5ZDRlMGY3ZTEwYiIsIm5iZiI6MTcyOTkyNjY3NC40NzIwOTksInN1YiI6IjY3MTM3ODRmNjUwMjQ4YjlkYjYxZTgxMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RRJNLOg8pmgYoomiCWKtwkw74T3ZtAs7ZScqxo1bzWg',
+            Authorization: 'Bearer <your_api_token>',
           },
         });
         setVideos(response.data.results);
@@ -69,6 +68,45 @@ const VideoForm = () => {
 
     fetchVideos();
   }, [movieId]);
+
+  // Save video details locally
+  const saveVideo = (video) => {
+    const videoDetails = {
+      id: Date.now(), // Unique ID for saved video
+      userId: '12345', // Example userId (replace with actual user logic)
+      movieId,
+      url: `https://www.youtube.com/watch?v=${video.key}`,
+      name: video.name,
+      site: video.site,
+      videoKey: video.key,
+      videoType: video.type,
+      official: video.official,
+    };
+
+    setSavedVideos((prevSaved) => [...prevSaved, videoDetails]);
+  };
+
+  // Submit video data to database using Axios
+  const handleSubmitToDatabase = async (videoDetails) => {
+    try {
+      const token = localStorage.getItem('authToken'); // Retrieve token from local storage
+      const response = await axios.post(
+        '/Admin/Videos',
+        videoDetails,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log('Video submitted successfully:', response.data);
+      alert('Video submitted to the database successfully!');
+    } catch (error) {
+      console.error('Error submitting video to the database:', error);
+      alert('Failed to submit video to the database. Please try again.');
+    }
+  };
 
   return (
     <div className="video-form">
@@ -107,12 +145,44 @@ const VideoForm = () => {
                 allowFullScreen
               ></iframe>
               <p>{video.name}</p>
+              <button
+                onClick={() => {
+                  const videoDetails = {
+                    id: Date.now(), // Unique ID
+                    userId: '12345', // Example userId
+                    movieId,
+                    url: `https://www.youtube.com/watch?v=${video.key}`,
+                    name: video.name,
+                    site: video.site,
+                    videoKey: video.key,
+                    videoType: video.type,
+                    official: video.official,
+                  };
+                  saveVideo(video);
+                  handleSubmitToDatabase(videoDetails);
+                }}
+              >
+                Submit Video
+              </button>
             </div>
           ))}
         </div>
       ) : (
         <p>No videos available.</p>
       )}
+
+      {/* Display saved videos */}
+      <div className="saved-videos">
+        <h3>Saved Videos</h3>
+        {savedVideos.map((video) => (
+          <div key={video.id}>
+            <p>{video.name}</p>
+            <a href={video.url} target="_blank" rel="noopener noreferrer">
+              Watch
+            </a>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
