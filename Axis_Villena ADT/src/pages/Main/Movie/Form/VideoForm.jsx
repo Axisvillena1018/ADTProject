@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom'; // Import useParams
 import './VideoForm.css';
 
 const VideoForm = () => {
   const [query, setQuery] = useState('');
-  const [movieId, setMovieId] = useState(null);
+  const { movieId } = useParams();
   const [videos, setVideos] = useState([]);
   const [savedVideos, setSavedVideos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [description, setDescription] = useState('');
+  const [status, setStatus] = useState('idle');
+
+  // Define setMovieId if it's part of your state
+  const setMovieId = (id) => {
+    // Implement your setMovieId logic here
+  };
 
   const searchMovie = async () => {
     if (query.trim() === '') return;
@@ -43,8 +51,6 @@ const VideoForm = () => {
     if (!movieId) return;
 
     const fetchVideos = async () => {
-      if (!movieId) return;
-    
       setLoading(true);
       setError('');
       try {
@@ -57,7 +63,7 @@ const VideoForm = () => {
             },
           }
         );
-    
+
         if (response.data.results.length > 0) {
           setVideos(response.data.results);
         } else {
@@ -84,29 +90,31 @@ const VideoForm = () => {
       videoKey: video.key,
       videoType: video.type,
       official: video.official,
+      description: description,
     };
 
     setSavedVideos((prevSaved) => [...prevSaved, videoDetails]);
   };
 
-  const handleSubmitToDatabase = async (videoDetails) => {
+  const handleSubmit = async (videoDetails) => {
+    setStatus('loading');
+    console.log(videoDetails);
+
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await axios.post(
-        '/Admin/Videos',
-        videoDetails,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log('Video submitted successfully:', response.data);
-      alert('Video submitted to the database successfully!');
-    } catch (error) {
-      console.error('Error submitting video to the database:', error);
-      alert('Failed to submit video to the database. Please try again.');
+      const token = localStorage.getItem('accessToken');
+      const res = await axios({
+        method: 'post',
+        url: '/admin/videos',
+        data: videoDetails,
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(res);
+      alert('Upload successful.');
+      setStatus('idle');
+    } catch (e) {
+      console.log(e);
+      setStatus('idle');
+      alert(e.response?.data?.message || 'Error.');
     }
   };
 
@@ -143,6 +151,12 @@ const VideoForm = () => {
                 allowFullScreen
               ></iframe>
               <p>{video.name}</p>
+              <input
+                type="text"
+                placeholder="Enter description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
               <button
                 onClick={() => {
                   const videoDetails = {
@@ -154,9 +168,10 @@ const VideoForm = () => {
                     videoKey: video.key,
                     videoType: video.type,
                     official: video.official,
+                    description: description,
                   };
                   saveVideo(video);
-                  handleSubmitToDatabase(videoDetails);
+                  handleSubmit(videoDetails);
                 }}
               >
                 Submit Video
@@ -176,6 +191,7 @@ const VideoForm = () => {
             <a href={video.url} target="_blank" rel="noopener noreferrer">
               Watch
             </a>
+            <p>{video.description}</p>
           </div>
         ))}
       </div>

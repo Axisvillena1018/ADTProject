@@ -29,4 +29,33 @@
     font-size: 16px;
     margin-top: 10px;
   }
+
+  .video-form {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .video-list {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .video-item {
+    margin-bottom: 20px;
+  }
+  
+  .error-message {
+    color: red;
+  }
+  
+  .search {
+    margin-bottom: 20px;
+  }
+  
+  .saved-videos {
+    margin-top: 20px;
+  }
+  
   

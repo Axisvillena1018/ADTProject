@@ -97,29 +97,6 @@ const CastAndCrews = () => {
     cast.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-const fetchCasts = async () => {
-  try {
-    const token = localStorage.getItem('accessToken');
-
-    if (!token) {
-      alert('Access token not found. Please log in again.');
-      return;
-    }
-
-    const response = await axios.get('/admin/casts', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    console.log('Fetched casts:', response.data);
-  } catch (error) {
-    console.error('Error fetching created casts:', error.response?.data || error.message);
-    alert(`Failed to fetch casts. Error: ${error.response?.data?.message || 'Unknown error'}`);
-  }
-};
-
-
   return (
     <div className="cast-and-crews">
       <h1>Cast for Movie ID: {movieId}</h1>
