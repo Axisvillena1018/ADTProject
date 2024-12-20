@@ -3,16 +3,15 @@ import axios from 'axios';
 import './VideoForm.css';
 
 const VideoForm = () => {
-  const [query, setQuery] = useState(''); // Search query state
-  const [movieId, setMovieId] = useState(null); // Selected movie ID
-  const [videos, setVideos] = useState([]); // Video data
-  const [savedVideos, setSavedVideos] = useState([]); // Saved videos
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(''); // Error message state
+  const [query, setQuery] = useState('');
+  const [movieId, setMovieId] = useState(null);
+  const [videos, setVideos] = useState([]);
+  const [savedVideos, setSavedVideos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  // Fetch movieId based on search query
   const searchMovie = async () => {
-    if (query.trim() === '') return; // Prevent empty search
+    if (query.trim() === '') return;
 
     setLoading(true);
     setError('');
@@ -22,14 +21,13 @@ const VideoForm = () => {
         {
           headers: {
             Accept: 'application/json',
-            Authorization: 'Bearer <eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzcyMWQwZGMyNjA5NTgzMGUwNTMzMWJlOTUyMmZlZSIsIm5iZiI6MTczMzMxMjA3Mi42NDUsInN1YiI6IjY3NTAzZTQ4NDNhNmFiZDA2YjZlYjYzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.g9SuizCUJ7Ikbf6tKraKj0EI8S10qVtRv0aCqBqueqE',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NzcyMWQwZGMyNjA5NTgzMGUwNTMzMWJlOTUyMmZlZSIsIm5iZiI6MTczMzMxMjA3Mi42NDUsInN1YiI6IjY3NTAzZTQ4NDNhNmFiZDA2YjZlYjYzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.g9SuizCUJ7Ikbf6tKraKj0EI8S10qVtRv0aCqBqueqE',
           },
         }
       );
 
-      // If movie is found, set movieId
       if (response.data.results.length > 0) {
-        setMovieId(response.data.results[0].id); // Choose the first movie
+        setMovieId(response.data.results[0].id);
       } else {
         setError('No movies found.');
       }
@@ -41,9 +39,8 @@ const VideoForm = () => {
     }
   };
 
-  // Fetch video data based on movieId
   useEffect(() => {
-    if (!movieId) return; // Don't fetch videos if there's no movieId
+    if (!movieId) return;
 
     const fetchVideos = async () => {
       if (!movieId) return;
@@ -77,11 +74,9 @@ const VideoForm = () => {
     fetchVideos();
   }, [movieId]);
 
-  // Save video details locally
   const saveVideo = (video) => {
     const videoDetails = {
-      id: Date.now(), // Unique ID for saved video
-      userId: '12345', // Example userId (replace with actual user logic)
+      id: Date.now(),
       movieId,
       url: `https://www.youtube.com/watch?v=${video.key}`,
       name: video.name,
@@ -94,10 +89,9 @@ const VideoForm = () => {
     setSavedVideos((prevSaved) => [...prevSaved, videoDetails]);
   };
 
-  // Submit video data to database using Axios
   const handleSubmitToDatabase = async (videoDetails) => {
     try {
-      const token = localStorage.getItem('authToken'); // Retrieve token from local storage
+      const token = localStorage.getItem('authToken');
       const response = await axios.post(
         '/Admin/Videos',
         videoDetails,
@@ -120,7 +114,6 @@ const VideoForm = () => {
     <div className="video-form">
       <h2>Search for Movie Videos</h2>
 
-      {/* Search input */}
       <div className="search">
         <input
           type="text"
@@ -133,13 +126,10 @@ const VideoForm = () => {
         </button>
       </div>
 
-      {/* Display error message */}
       {error && <p className="error-message">{error}</p>}
 
-      {/* Display loading spinner */}
       {loading && <p>Loading...</p>}
 
-      {/* Display videos */}
       {videos.length > 0 ? (
         <div className="video-list">
           {videos.map((video) => (
@@ -156,8 +146,7 @@ const VideoForm = () => {
               <button
                 onClick={() => {
                   const videoDetails = {
-                    id: Date.now(), // Unique ID
-                    userId: '12345', // Example userId
+                    id: Date.now(),
                     movieId,
                     url: `https://www.youtube.com/watch?v=${video.key}`,
                     name: video.name,
@@ -179,7 +168,6 @@ const VideoForm = () => {
         <p>No videos available.</p>
       )}
 
-      {/* Display saved videos */}
       <div className="saved-videos">
         <h3>Saved Videos</h3>
         {savedVideos.map((video) => (

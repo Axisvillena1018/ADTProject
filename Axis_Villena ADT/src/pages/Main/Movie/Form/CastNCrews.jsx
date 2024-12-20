@@ -14,7 +14,6 @@ const CastAndCrews = () => {
   });
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Fetch only cast data from TMDB API
   const searchCasts = () => {
     axios
       .get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
@@ -42,12 +41,10 @@ const CastAndCrews = () => {
       });
   };
 
-  // Handle selection of a cast member
   const handleSelectCast = (cast) => {
     setSelectedCast(cast);
   };
 
-  // Handle input change for the selected cast
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSelectedCast((prevState) => ({
@@ -56,22 +53,15 @@ const CastAndCrews = () => {
     }));
   };
 
-  // Handle the form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Validate inputs
     if (!selectedCast.name || !selectedCast.characterName || !selectedCast.url) {
       alert('Please fill in all fields before submitting.');
       return;
     }
   
-    // Replace with actual logic to fetch userId dynamically if needed
-    const userId = 'dynamic-user-id';
-  
-    // Construct the payload
     const castData = {
-      userId: userId,
       movieId: movieId,
       name: selectedCast.name,
       characterName: selectedCast.characterName,
@@ -79,21 +69,19 @@ const CastAndCrews = () => {
     };
   
     try {
-      // Retrieve the access token from localStorage (or another source)
-      const token = localStorage.getItem('accessToken'); // Replace with your storage method
+      const token = localStorage.getItem('accessToken'); 
   
       if (!token) {
         alert('Access token not found. Please log in again.');
         return;
       }
   
-      // Send POST request to save the cast data
       const response = await axios({
         method: 'POST',
         url: '/admin/casts',
         data: castData,
         headers: {
-          Authorization: `Bearer ${token}`, // Using the token from localStorage
+          Authorization: `Bearer ${token}`,
         },
       });
   
@@ -105,15 +93,13 @@ const CastAndCrews = () => {
     }
   };
 
-  // Filter cast members based on the search query
   const filteredCastList = castList.filter((cast) =>
     cast.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Fetch all created casts
 const fetchCasts = async () => {
   try {
-    const token = localStorage.getItem('accessToken'); // Replace with your storage method
+    const token = localStorage.getItem('accessToken');
 
     if (!token) {
       alert('Access token not found. Please log in again.');
@@ -127,8 +113,6 @@ const fetchCasts = async () => {
     });
 
     console.log('Fetched casts:', response.data);
-    // Handle the fetched casts as needed
-    // For example, you can display them or store them in a state
   } catch (error) {
     console.error('Error fetching created casts:', error.response?.data || error.message);
     alert(`Failed to fetch casts. Error: ${error.response?.data?.message || 'Unknown error'}`);
